@@ -130,3 +130,19 @@ def read\_system\_file(path: str, is\_tainted: bool = True):
 
 &#x20;   return open(path).read()
 
+
+
+---
+
+## 🏢 Enterprise & Pilot Program
+
+Building autonomous agents handling financial transactions, database execution, or sensitive user data?
+
+We are working with early design partners to deploy **AegisKernel Enterprise**:
+- **Custom Policy Engine:** Tailored to your proprietary agent toolsets
+- **Real-Time Telemetry:** Instant SIEM intrusion alerts & audit trail
+- **Dedicated SLA:** Verified <0.04ms execution boundary guarantee
+
+👉 **Get in touch for pilot onboarding & commercial support:**
+- **Twitter / X:** [@adityawebde](https://x.com/adityawebde)
+- **Inquiries:** Open an Issue or ping on X
