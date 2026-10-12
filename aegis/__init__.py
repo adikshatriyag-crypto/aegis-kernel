@@ -1,4 +1,3 @@
-
 """
 AegisKernel: Zero-Trust Security Runtime for Autonomous AI Agents
 """
