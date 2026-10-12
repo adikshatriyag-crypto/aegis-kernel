@@ -146,3 +146,13 @@ We are working with early design partners to deploy **AegisKernel Enterprise**:
 👉 **Get in touch for pilot onboarding & commercial support:**
 - **Twitter / X:** [@adityawebde](https://x.com/adityawebde)
 - **Inquiries:** Open an Issue or ping on X
+### ⚡ 1-Line Framework Integration (CrewAI & LangChain)
+
+Hardens entire agent toolsets against prompt injection with zero configuration:
+
+```python
+from aegis import secure_tools
+
+# Automatically hardens any toolset in CrewAI, LangChain, or AutoGen
+agent_tools = secure_tools([run_terminal_command, execute_sql, read_file])
+```
