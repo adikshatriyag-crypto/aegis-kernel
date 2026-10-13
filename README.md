@@ -17,7 +17,7 @@
 
 
 \---
-
+> ⭐ **If you find AegisKernel valuable, please star the repository to support deterministic AI safety!**
 
 
 \## 🚨 The Problem
