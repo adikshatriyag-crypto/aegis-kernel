@@ -1,14 +1,15 @@
 import functools
 import time
-from typing import Callable
+from typing import Callable, Any
 
 class SecurityViolationException(Exception):
     """Raised when an untrusted prompt attempts to execute a high-privilege syscall."""
     pass
 
 class AegisShield:
-    def __init__(self, strict_mode: bool = True):
+    def __init__(self, strict_mode: bool = True, policy: Any = None):
         self.strict_mode = strict_mode
+        self.policy = policy
         self.blocked_count = 0
         self.allowed_count = 0
         self.sensitive_patterns = [
