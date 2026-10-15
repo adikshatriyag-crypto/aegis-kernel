@@ -149,6 +149,18 @@ aegis-kernel/
 
 ---
 
+## 💼 Enterprise Design Partners ($1,000 – $5,000/mo)
+
+Deploying autonomous agents in production? We are onboarding **5 founding design partner startups & enterprise teams** for:
+- **Fleet-Wide Capability Isolation:** Custom permission boundaries for up to 50 autonomous agents.
+- **Compliance-Ready Audit Trails:** Cryptographic SHA-256 HMAC tamper-evident log exports for SOC2, HIPAA, and EU AI Act compliance.
+- **Dedicated 24/7 Security SLA:** 1-hour emergency patch turnaround for novel zero-day prompt injection vectors.
+- **Direct Founder Slack Channel:** Priority integration engineering and architecture support.
+
+👉 **To apply for a design partnership slot:** Open an Issue or reach out via Twitter [@adikshatriyag](https://x.com) / email `founder@aegiskernel.com`.
+
+---
+
 ## 📄 License
 
 Distributed under the **MIT License**. See `LICENSE` for more information.
