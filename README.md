@@ -3,13 +3,19 @@
 > **The first deterministic, capability-based interception layer that guarantees 100% immunity against prompt injection and tool-hijacking at the OS syscall boundary.**
 
 [![CI Security Audit](https://github.com/adikshatriyag-crypto/aegis-kernel/actions/workflows/security_audit.yml/badge.svg)](https://github.com/adikshatriyag-crypto/aegis-kernel/actions)
+[![PyPI version](https://img.shields.io/badge/PyPI-v0.6.0-blue.svg)](https://pypi.org/project/aegis-kernel/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
 [![Defense Rate](https://img.shields.io/badge/Defense%20Rate-100%25-brightgreen.svg)]()
 [![Latency Overhead](https://img.shields.io/badge/Latency-%3C0.05ms-purple.svg)]()
-[![Version](https://img.shields.io/badge/version-v0.2.0-blue.svg)]()
 
 ---
+
+> 🚀 **Deploying AI Agents to Production?** We are onboarding 3 Founding Design Partners for a free 1-week pilot with direct 1-on-1 support (<0.05ms OS syscall defense).  
+> 🔗 **[Try the Live Web Sandbox (Zero Install)](https://adikshatriyag-crypto.github.io/aegis-kernel/)** | **[Request Free Pilot Demo](mailto:adikshatriyag@gmail.com)**
+
+---
+
 ⭐ **If you find AegisKernel valuable, star the repository to support open-source deterministic AI agent safety!**
 
 ---
