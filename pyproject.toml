@@ -4,9 +4,9 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "aegis-kernel"
-version = "0.2.0"
+version = "0.6.1"
 authors = [
-  { name="Aditya Verma", email="founder@aegiskernel.com" },
+  { name="Aditya Verma", email="adikshatriyag@gmail.com" },
 ]
 description = "Deterministic Zero-Trust Security Runtime for Autonomous AI Agents"
 readme = "README.md"
