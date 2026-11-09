@@ -3,8 +3,8 @@ AegisKernel + mcpgawk Rugpull Benchmark
 Evaluates real-time capability enforcement against the live mcpgawk test server:
 https://mcpgawk-testserver.vercel.app/rugpull/mcp
 
-Architecture Synergy:
-- mcpgawk: Detects tool surface changes and rugpulls when an MCP server updates.
+Architecture:
+- Pairs with mcpgawk: mcpgawk keeps approved tool definitions and holds calls when definitions change.
 - AegisKernel: Deterministically enforces capability scopes (<0.016ms) so even if
   an unexpected or mutated tool fires, unauthorized syscalls/paths are terminated.
 """
