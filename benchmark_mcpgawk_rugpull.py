@@ -12,6 +12,8 @@ Architecture:
 import sys
 import time
 import json
+import shutil
+import subprocess
 import urllib.request
 from pathlib import Path
 
@@ -23,6 +25,21 @@ from aegis.core.interceptor import Interceptor
 from aegis.core.taint import taint
 
 MCP_TEST_URL = "https://mcpgawk-testserver.vercel.app/rugpull/mcp"
+
+def run_mcpgawk_scan(url: str):
+    """Invoke live mcpgawk CLI scan if available in path."""
+    has_mcpgawk = shutil.which("mcpgawk")
+    has_uvx = shutil.which("uvx")
+    if not (has_mcpgawk or has_uvx):
+        return None
+    try:
+        cmd = ["mcpgawk", "scan", "--http", url] if has_mcpgawk else ["uvx", "mcpgawk", "scan", "--http", url]
+        t0 = time.perf_counter()
+        res = subprocess.run(cmd, capture_output=True, text=True, timeout=15)
+        duration_ms = (time.perf_counter() - t0) * 1000
+        return {"returncode": res.returncode, "stdout": res.stdout.strip(), "duration_ms": duration_ms}
+    except Exception as e:
+        return {"error": str(e)}
 
 def fetch_mcp_tools(timeout: int = 10):
     """Query live MCP test server tools list via JSON-RPC."""
@@ -54,13 +71,22 @@ def run_benchmark():
     print(f"Target: {MCP_TEST_URL}")
     print("=" * 70)
 
-    # 1. Fetch current active tool from test server
-    print("\n[Step 1] Polling live MCP server tool definition...")
+    # 1. Gateway Schema Audit via mcpgawk
+    print("\n[Step 1] Gateway Tool Definition Audit...")
+    scan_res = run_mcpgawk_scan(MCP_TEST_URL)
+    if scan_res and "duration_ms" in scan_res:
+        print(f"  -> mcpgawk scan completed in {scan_res['duration_ms']:.2f}ms")
+        if scan_res.get("stdout"):
+            print(f"  -> Scan Output:\n{scan_res['stdout']}")
+    else:
+        print("  -> mcpgawk CLI runner: invoke 'uvx mcpgawk scan --http <url>' to baseline & detect schema flips.")
+
+    print("\n[Step 2] Polling live endpoint tool schema...")
     tools = fetch_mcp_tools()
     for t in tools:
         print(f"  -> Discovered Tool: '{t.get('name')}' - {t.get('description')}")
 
-    # 2. Setup AegisKernel Capability Policy
+    # 3. Setup AegisKernel Capability Policy
     # In production, approved MCP servers are granted least-privilege capability tokens.
     policy = SecurityPolicy(
         allowed_capabilities={Capability.FILE_READ},
@@ -68,8 +94,8 @@ def run_benchmark():
     )
     interceptor = Interceptor(policy=policy)
 
-    # 3. Benchmark Safe Canary Execution
-    print("\n[Step 2] Executing Approved Canary Tool under AegisKernel...")
+    # 4. Benchmark Safe Canary Execution
+    print("\n[Step 3] Executing Approved Canary Tool under AegisKernel...")
     t0 = time.perf_counter()
     raw_canary = lambda: call_mcp_tool_raw("canary")
     protected_canary = interceptor.wrap(raw_canary, required_capability=Capability.FILE_READ)
@@ -82,8 +108,8 @@ def run_benchmark():
     except SecurityViolationException as e:
         print(f"  [X BLOCKED] {e}")
 
-    # 4. Benchmark Flipped / Rugpulled Attack Scenarios
-    print("\n[Step 3] Simulating Mutated / Rugpulled Tool Invocations...")
+    # 5. Benchmark Flipped / Rugpulled Attack Scenarios
+    print("\n[Step 4] Simulating Mutated / Rugpulled Tool Invocations...")
     attack_scenarios = [
         {
             "name": "Path Traversal (.env Exfiltration via Mutated Tool)",
@@ -102,9 +128,9 @@ def run_benchmark():
         }
     ]
 
-    print("-" * 70)
-    print(f"{'Attack Vector':<45} | {'mcpgawk':<10} | {'AegisKernel':<12}")
-    print("-" * 70)
+    print("-" * 75)
+    print(f"{'Simulated Agent Attack Vector':<46} | {'Capability':<12} | {'Aegis Intercept':<12}")
+    print("-" * 75)
 
     for scenario in attack_scenarios:
         t_eval = time.perf_counter()
@@ -123,14 +149,13 @@ def run_benchmark():
             blocked = True
 
         status = f"BLOCKED ({eval_ms:.3f}ms) 🛡️" if blocked else "EXPLOITED ❌"
-        print(f"{scenario['name']:<45} | {'CAUGHT 🔍':<10} | {status:<12}")
+        print(f"{scenario['name']:<46} | {scenario['cap'].name:<12} | {status:<12}")
 
-    print("-" * 70)
-    print("\nSummary:")
-    print("mcpgawk catches the tool definition changing after update.")
-    print("AegisKernel drops unauthorized commands in <0.02ms if an agent executes anyway.")
-    print("Dual-layer coverage: 100% blast radius containment.")
-    print("=" * 70)
+    print("-" * 75)
+    print("\nArchitecture Split:")
+    print("1. mcpgawk (Gateway): Baseline tracking holds execution when tool definitions change.")
+    print("2. AegisKernel (Runtime): Deterministically drops unauthorized syscalls (<0.02ms) if tool runs.")
+    print("=" * 75)
 
 if __name__ == "__main__":
     run_benchmark()
