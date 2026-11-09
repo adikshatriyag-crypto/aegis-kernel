@@ -139,6 +139,21 @@ Open [https://adikshatriyag-crypto.github.io/aegis-kernel/](https://adikshatriya
 
 ---
 
+## 🚀 Design Partners & Production Staging
+
+Deploying agents with terminal, database, or filesystem execution in production? We are onboarding **5 early design partners** to shape the enterprise capability runtime:
+
+- **Centralized Audit Telemetry:** Hosted cryptographic SHA-256 HMAC violation stream and forensic compliance logs.
+- **eBPF Host Isolation:** Pre-release benchmark access for ring-0 child process containment below the runtime.
+- **Custom Capability Matrix Design:** Dedicated integration support for LangChain, CrewAI, AutoGen, and custom agent runtimes.
+
+**Direct Channels:**
+- ✉️ Email: [`adikshatriyag@gmail.com`](mailto:adikshatriyag@gmail.com)
+- 💬 Discord: `@adityawebde`
+- 🐛 Issues & Staging: Open an [Issue](https://github.com/adikshatriyag-crypto/aegis-kernel/issues)
+
+---
+
 ## 🤝 Contributing & Community
 
 AegisKernel is an open-source runtime built for the AI builder community.
