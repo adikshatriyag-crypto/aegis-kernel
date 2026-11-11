@@ -3,7 +3,7 @@
 > **Deterministic capability-based security runtime that intercepts unauthorized tool execution, path traversal, and subshell escapes for autonomous AI agents in <0.016ms with zero LLM token overhead.**
 
 [![CI Security Audit](https://github.com/adikshatriyag-crypto/aegis-kernel/actions/workflows/security_audit.yml/badge.svg)](https://github.com/adikshatriyag-crypto/aegis-kernel/actions)
-[![PyPI version](https://img.shields.io/badge/PyPI-v0.6.0-blue.svg)](https://pypi.org/project/aegis-kernel/)
+[![PyPI version](https://img.shields.io/badge/PyPI-v0.6.1-blue.svg)](https://pypi.org/project/aegis-kernel/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
 [![Latency Overhead](https://img.shields.io/badge/Latency-%3C0.016ms-purple.svg)]()
@@ -17,7 +17,7 @@
 
 ## 🚨 The Problem in Autonomous AI Agents
 
-Modern AI Agents (**CrewAI, LangChain, Claude Code, Browser Agents**) execute tools with direct access to file systems, databases, and bash terminals.
+Modern AI Agents & MCP Servers (**CrewAI, LangChain, smolagents, Anthropic MCP, Claude Code**) execute tools with direct access to file systems, databases, and bash terminals.
 
 Traditional guardrails rely on **probabilistic LLMs** (asking a secondary LLM *"is this bash command safe?"* or using regex allowlists). Attackers bypass them easily using:
 - **Indirect Prompt Injection** (concealed within scraped websites, emails, or PDFs)
@@ -102,12 +102,35 @@ def run_command(cmd: str):
     return os.system(cmd)  # Unauthorized execve/openat dropped in <0.016ms
 ```
 
+### Model Context Protocol (MCP) Tool Sandboxing:
+*Pairs with `mcpgawk` for gateway tool schema verification + runtime blast radius containment.*
+
+```python
+from aegis import AegisShield, SecurityPolicy, Capability
+
+# Grant explicit least-privilege capability token to MCP tool
+shield = AegisShield(policy=SecurityPolicy(allowed_capabilities={Capability.FILE_READ}))
+
+@shield.protect_tool
+def mcp_read_file(path: str):
+    return open(path).read()  # Path traversal (../../.env) dropped in <0.016ms
+```
+👉 *See live reproduction benchmark: [`benchmark_mcpgawk_rugpull.py`](benchmark_mcpgawk_rugpull.py) and implementation: [`examples/mcp_gawk_defense.py`](examples/mcp_gawk_defense.py)*
+
 ### CrewAI & LangChain Integration:
 ```python
 from aegis.integrations import protect_agent
 
 # Pass your existing CrewAI or LangChain agent instance
 hardened_agent = protect_agent(agent)
+```
+
+### Hugging Face `smolagents` Protection:
+```python
+from aegis import AegisShield, SecurityPolicy
+
+# Confines local python CodeAgent execution to designated workspace
+shield = AegisShield(policy=SecurityPolicy.strict(allowed_paths=["./workspace"]))
 ```
 
 ---
